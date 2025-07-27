@@ -1,21 +1,23 @@
 package com.eatclubapplication.presentation.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -33,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.eatclubapplication.data.model.Restaurant
 import com.eatclubapplication.presentation.viewmodel.RestaurantContract
 import com.eatclubapplication.presentation.viewmodel.RestaurantListViewModel
 import com.eatclubapplication.presentation.viewmodel.SortOption
@@ -64,6 +65,12 @@ fun RestaurantListScreen(
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             TextField(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "e.g. chinese, pizza"
+                    )
+                },
                 value = viewState.searchQuery,
                 onValueChange = { viewModel.onSearchQueryChanged(it) },
                 label = { Text("Search") },
@@ -72,12 +79,15 @@ fun RestaurantListScreen(
             if (viewState.isLoading) {
                 CircularProgressIndicator()
             } else {
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     items(viewState.filteredRestaurants) {
-                        RestaurantCard(restaurant = it) {
+                        RestaurantCard(restaurant = it, onCardClick = {
                             viewModel.onRestaurantSelected(it)
                             navController.navigate("restaurant_detail")
-                        }
+                        })
                     }
                 }
             }
@@ -132,24 +142,10 @@ fun SortOptionItem(text: String, isSelected: Boolean, onClick: () -> Unit) {
             .padding(16.dp)
     ) {
         Text(text = text, modifier = Modifier.weight(1.0f))
+        Spacer(Modifier.width(8.dp))
         if (isSelected) {
             Icon(Icons.Default.Check, contentDescription = "Selected")
         }
     }
 }
 
-@Composable
-fun RestaurantCard(restaurant: Restaurant, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable(onClick = onClick)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = restaurant.name, style = MaterialTheme.typography.headlineSmall)
-            Text(text = restaurant.cuisines.joinToString(", "))
-            //Text(text = "${restaurant.rating} stars")
-        }
-    }
-}
