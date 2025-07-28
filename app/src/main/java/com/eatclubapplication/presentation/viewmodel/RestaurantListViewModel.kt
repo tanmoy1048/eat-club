@@ -3,7 +3,6 @@ package com.eatclubapplication.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eatclubapplication.data.model.Deal
 import com.eatclubapplication.data.model.Restaurant
 import com.eatclubapplication.data.repository.RestaurantRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,11 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-enum class SortOption {
-    NAME,
-    BEST_DEALS
-}
 
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
@@ -126,4 +120,9 @@ class RestaurantListViewModel @Inject constructor(
             _actions.emit(RestaurantContract.Actions.ShowSnackBarMessage(message))
         }
     }
+}
+
+enum class SortOption {
+    NAME,
+    BEST_DEALS
 }
