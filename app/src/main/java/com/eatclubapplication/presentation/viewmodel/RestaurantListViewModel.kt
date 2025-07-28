@@ -37,7 +37,7 @@ class RestaurantListViewModel @Inject constructor(
         fetchRestaurants()
     }
 
-    private fun fetchRestaurants() {
+    fun fetchRestaurants() {
         viewModelScope.launch {
             try {
                 _viewState.update {
