@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +19,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -46,7 +47,7 @@ fun RestaurantCard(
                     model = restaurant.imageLink,
                     contentDescription = restaurant.name,
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .height(200.dp),
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(id = android.R.drawable.ic_menu_gallery),
@@ -109,3 +110,12 @@ fun RestaurantCard(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun RestaurantCardPreview(
+    @PreviewParameter(RestaurantPreviewParameterProvider::class) restaurant: Restaurant
+) {
+    RestaurantCard(
+        restaurant = restaurant,
+    )
+}

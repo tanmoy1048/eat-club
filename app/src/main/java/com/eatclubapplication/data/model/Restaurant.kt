@@ -14,4 +14,3 @@ data class Restaurant(
     val close: String,
     val deals: List<Deal>
 )
-
